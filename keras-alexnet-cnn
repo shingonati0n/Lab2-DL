@@ -1,0 +1,441 @@
+#Actividad 1
+
+#El archivo AlexNetCapa1.py, disponible en el sitio web del curso, contiene el código anterior. Ejecute este
+#código y verifique que las dimensiones de salida de la capa definida corresponden a las utilizadas por AlexNet.
+#Para esto puede utilizar en Keras el comando: print(modelAlexNet.output shape). Este comando permite
+#imprimir en pantalla la dimensiones de salida de la red definida hasta la ejecución del comando. A modo
+#de ejemplo, para acceder a las dimensiones de salida de la red antes y después de aplicar el operador Max-
+#Pooling, podemos ejecutar:
+
+#Definicion de contenedor y primera capa de AlexNet.
+modelAlexNet = Sequential()
+modelAlexNet.add(ZeroPadding2D((2,2), input_shape=(224, 224, 3)))
+modelAlexNet.add(Convolution2D(96,11,11,subsample=(4,4),border_mode='valid'))
+modelAlexNet.add(Activation(activation='rel'))
+modelAlexNet.add(BatchNormalization())
+2print(modelAlexNet.output_shape) #dims de la red antes de max-pooling
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print(modelAlexNet.output_shape) #dims de la red despues de max-pooling
+modelAlexNet.summary()
+
+#Output ejecución 1era capa
+runfile('/home/F5/Documents/ML-DL/Laboratorio2/AlexNetCapa12.py', wdir='/home/F5/Documents/ML-DL/Laboratorio2')
+(None, 55, 55, 96)
+(None, 27, 27, 96)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+zero_padding2d_3 (ZeroPaddin (None, 228, 228, 3)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 55, 55, 96)        34944     
+_________________________________________________________________
+activation_2 (Activation)    (None, 55, 55, 96)        0         
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 55, 55, 96)        384       
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 27, 27, 96)        0         
+=================================================================
+Total params: 35,328
+Trainable params: 35,136
+Non-trainable params: 192
+
+#Las dimensiones corresponden con la segunda capa de AlexNet. Cabe destacar que se realizó un pequeño cambo en el código, especificamente en el metodo Convolution2D. Se cambio a Conv2D, metodo recomendado para Keras 2 API.
+
+modelAlexNet.add(Conv2D(96,(11,11),strides=(4,4),padding='valid'))
+
+#Se utilizará este metodo para las actividades siguientes
+
+#Actividad 2
+
+#Siguiendo con la arquitectura de AlexNet en la figura 1 y las funciones definidas anteriormente, la segunda capa queda definida por:
+
+modelAlexNet.add(ZeroPadding2D((2,2)))
+modelAlexNet.add(Convolution2D(256, 5, 5, border_mode=’valid’))
+modelAlexNet.add(Activation(activation=’relu ’))
+modelAlexNet.add(BatchNormalization())
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+
+#Verifique que las dimensiones de salida de esta segunda capa corresponden a las utilizadas por AlexNet.
+#En su informe de laboratorio incorporé los output generados. Adicionalmente, utilice el comando modelAlexNet.summary() para generar un resumen de la red construida hasta este momento. ¿Cuántos parámetros (pesos) contiene esta red?
+
+#Código ejecutado - Se agrego tambien una descripción a cada dimension impresa para mejorar la visualizacion del output:
+
+#Definicion de librerias con la funciones que seran utilizadas por Keras.
+import keras
+from keras.layers import Activation, Dense, Flatten, Dropout
+from keras.models import Sequential
+from keras.layers.convolutional import Convolution2D, ZeroPadding2D, Conv2D
+from keras.layers.normalization import BatchNormalization
+from keras.layers.pooling import MaxPooling2D
+
+#Definicion de contenedor y primera capa de AlexNet.
+layerCount = 1
+modelAlexNet = Sequential()
+modelAlexNet.add(ZeroPadding2D((2,2), input_shape=(224, 224, 3)))
+modelAlexNet.add(Conv2D(96,(11,11),strides=(4,4),padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 2
+modelAlexNet.add(ZeroPadding2D((2,2)))
+modelAlexNet.add(Conv2D(256, (5, 5), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.summary()
+
+#Output:
+
+runfile('/home/F5/Documents/ML-DL/Laboratorio2/AlexNetCapa12.py', wdir='/home/F5/Documents/ML-DL/Laboratorio2')
+Batch Normalization Capa 1: (None, 55, 55, 96) 
+Max Pooling Capa 1: (None, 27, 27, 96)
+Batch Normalization Capa 2: (None, 27, 27, 256) 
+Max Pooling Capa 2: (None, 13, 13, 256)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+zero_padding2d_8 (ZeroPaddin (None, 228, 228, 3)       0         
+_________________________________________________________________
+conv2d_7 (Conv2D)            (None, 55, 55, 96)        34944     
+_________________________________________________________________
+activation_7 (Activation)    (None, 55, 55, 96)        0         
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 55, 55, 96)        384       
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 27, 27, 96)        0         
+_________________________________________________________________
+zero_padding2d_9 (ZeroPaddin (None, 31, 31, 96)        0         
+_________________________________________________________________
+conv2d_8 (Conv2D)            (None, 27, 27, 256)       614656    
+_________________________________________________________________
+activation_8 (Activation)    (None, 27, 27, 256)       0         
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 27, 27, 256)       1024      
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 13, 13, 256)       0         
+=================================================================
+Total params: 651,008
+Trainable params: 650,304
+Non-trainable params: 704
+
+#De acuerdo a este summary, la red de 2 capas contiene un total de 651,008 parametros. de los cuales 650304 son entrenables
+
+#Actividad 3
+
+#Usando como guı́a las capas anteriores, construya en Keras la tercera capa de AlexNet. Tenga presente que esta tercera capa:
+#• Incluye un padding de 1 cero a cada lado del mapa de activaciones de entrada.
+#• No utiliza normalización batch.
+#• No incorpora una etapa de max-pooling.
+#En su informe de laboratorio reporte el código generado. Adicionalmente, utilice la función output shape para verificar que la salida de la tercera capa corresponde a la arquitectura de la figura 1, y la función summary para obtener un resumen de los parámetros de la red.
+
+#Codigo ejecutado para capa 3:
+
+#Definicion de contenedor y primera capa de AlexNet.
+layerCount = 1
+modelAlexNet = Sequential()
+modelAlexNet.add(ZeroPadding2D((2,2), input_shape=(224, 224, 3)))
+modelAlexNet.add(Conv2D(96,(11,11),strides=(4,4),padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 2
+modelAlexNet.add(ZeroPadding2D((2,2)))
+modelAlexNet.add(Conv2D(256, (5, 5), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1.
+#Capa 3
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+#modelAlexNet.add(BatchNormalization()) sin batch
+#modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2))) sin max pooling
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.summary()
+layerCount = layerCount + 1
+
+#Output:
+
+runfile('/home/F5/Documents/ML-DL/Laboratorio2/AlexNetCapa12.py', wdir='/home/F5/Documents/ML-DL/Laboratorio2')
+Batch Normalization Capa 1: (None, 55, 55, 96) 
+Max Pooling Capa 1: (None, 27, 27, 96)
+Batch Normalization Capa 2: (None, 27, 27, 256) 
+Max Pooling Capa 2: (None, 13, 13, 256)
+Convolución Capa 3: (None, 13, 13, 384) 
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+zero_padding2d_16 (ZeroPaddi (None, 228, 228, 3)       0         
+_________________________________________________________________
+conv2d_15 (Conv2D)           (None, 55, 55, 96)        34944     
+_________________________________________________________________
+activation_15 (Activation)   (None, 55, 55, 96)        0         
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 55, 55, 96)        384       
+_________________________________________________________________
+max_pooling2d_9 (MaxPooling2 (None, 27, 27, 96)        0         
+_________________________________________________________________
+zero_padding2d_17 (ZeroPaddi (None, 31, 31, 96)        0         
+_________________________________________________________________
+conv2d_16 (Conv2D)           (None, 27, 27, 256)       614656    
+_________________________________________________________________
+activation_16 (Activation)   (None, 27, 27, 256)       0         
+_________________________________________________________________
+batch_normalization_14 (Batc (None, 27, 27, 256)       1024      
+_________________________________________________________________
+max_pooling2d_10 (MaxPooling (None, 13, 13, 256)       0         
+_________________________________________________________________
+zero_padding2d_18 (ZeroPaddi (None, 15, 15, 256)       0         
+_________________________________________________________________
+conv2d_17 (Conv2D)           (None, 13, 13, 384)       885120    
+_________________________________________________________________
+activation_17 (Activation)   (None, 13, 13, 384)       0         
+=================================================================
+Total params: 1,536,128
+Trainable params: 1,535,424
+Non-trainable params: 704
+
+#Actividad 4
+#Para completar la fase convolucional de AlexNet nos queda definir las capas 4 y 5. Análogamente a la capa 3, la capa 4 también realiza un padding de 1 cero a cada lado de la entrada, no incluye normalización batch, y no incluye max-pooling. Por su parte, la capa 5 realiza un padding de 1 cero a cada lado de la entrada, no incorpora normalización batch, pero si incorpora una etapa de max-pooling con una ventana de 3x3 y un stride de 2 en las direcciones vertical y horizontal.
+#Genere el código de las capas 4 y 5, verifique que las salidas sean las adecuadas, y determine el número de parámetros de la red. Reporte sus observaciones y código generado.
+
+#Código ejecutado
+
+#Definicion de contenedor y primera capa de AlexNet.
+layerCount = 1
+modelAlexNet = Sequential()
+modelAlexNet.add(ZeroPadding2D((2,2), input_shape=(224, 224, 3)))
+modelAlexNet.add(Conv2D(96,(11,11),strides=(4,4),padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 2
+modelAlexNet.add(ZeroPadding2D((2,2)))
+modelAlexNet.add(Conv2D(256, (5, 5), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 3
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+#modelAlexNet.add(BatchNormalization()) sin batch
+#modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2))) sin max pooling
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 4
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+#modelAlexNet.add(BatchNormalization()) sin batch
+#modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2))) sin max pooling
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 5
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+#modelAlexNet.add(BatchNormalization()) sin batch
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+modelAlexNet.summary()
+
+#Output
+
+runfile('/home/F5/Documents/ML-DL/Laboratorio2/AlexNetCapa12.py', wdir='/home/F5/Documents/ML-DL/Laboratorio2')
+Batch Normalization Capa 1: (None, 55, 55, 96) 
+Max Pooling Capa 1: (None, 27, 27, 96)
+Batch Normalization Capa 2: (None, 27, 27, 256) 
+Max Pooling Capa 2: (None, 13, 13, 256)
+Convolución Capa 3: (None, 13, 13, 384) 
+Convolución Capa 4: (None, 13, 13, 384) 
+Convolución Capa 5: (None, 13, 13, 384) 
+Max Pooling Capa 5: (None, 6, 6, 384)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+zero_padding2d_19 (ZeroPaddi (None, 228, 228, 3)       0         
+_________________________________________________________________
+conv2d_18 (Conv2D)           (None, 55, 55, 96)        34944     
+_________________________________________________________________
+activation_18 (Activation)   (None, 55, 55, 96)        0         
+_________________________________________________________________
+batch_normalization_15 (Batc (None, 55, 55, 96)        384       
+_________________________________________________________________
+max_pooling2d_11 (MaxPooling (None, 27, 27, 96)        0         
+_________________________________________________________________
+zero_padding2d_20 (ZeroPaddi (None, 31, 31, 96)        0         
+_________________________________________________________________
+conv2d_19 (Conv2D)           (None, 27, 27, 256)       614656    
+_________________________________________________________________
+activation_19 (Activation)   (None, 27, 27, 256)       0         
+_________________________________________________________________
+batch_normalization_16 (Batc (None, 27, 27, 256)       1024      
+_________________________________________________________________
+max_pooling2d_12 (MaxPooling (None, 13, 13, 256)       0         
+_________________________________________________________________
+zero_padding2d_21 (ZeroPaddi (None, 15, 15, 256)       0         
+_________________________________________________________________
+conv2d_20 (Conv2D)           (None, 13, 13, 384)       885120    
+_________________________________________________________________
+activation_20 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+zero_padding2d_22 (ZeroPaddi (None, 15, 15, 384)       0         
+_________________________________________________________________
+conv2d_21 (Conv2D)           (None, 13, 13, 384)       1327488   
+_________________________________________________________________
+activation_21 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+zero_padding2d_23 (ZeroPaddi (None, 15, 15, 384)       0         
+_________________________________________________________________
+conv2d_22 (Conv2D)           (None, 13, 13, 384)       1327488   
+_________________________________________________________________
+activation_22 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+max_pooling2d_13 (MaxPooling (None, 6, 6, 384)         0         
+=================================================================
+Total params: 4,191,104
+Trainable params: 4,190,400
+Non-trainable params: 704
+
+#Actividad 5
+#Ha sido una tarea ardua pero estamos cerca de completar la implementación de AlexNet, sólo nos queda la
+#definición de las capas de conexión densa (multilayer perceptron o MLP).
+#Para la definición de la primera de estas capas, el primer paso es llevar a una representación 1D la salida
+#3D de la capa 5 (representada en figura 1 con un cubo). Para esto utilizamos la función de Keras Flatten
+#(aplanar), según la siguiente sintaxis:
+#modelAlexNet.add(Flatten())
+#Utilice la función output shape para verificar el efecto de la función Flatten. ¿Las dimensiones obtenidas
+#corresponden a lo esperado?. Fundamente sus observaciones.
+
+#Codigo ejecutado:
+
+#Definicion de contenedor y primera capa de AlexNet.
+layerCount = 1
+modelAlexNet = Sequential()
+modelAlexNet.add(ZeroPadding2D((2,2), input_shape=(224, 224, 3)))
+modelAlexNet.add(Conv2D(96,(11,11),strides=(4,4),padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 2
+modelAlexNet.add(ZeroPadding2D((2,2)))
+modelAlexNet.add(Conv2D(256, (5, 5), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+modelAlexNet.add(BatchNormalization())
+print("Batch Normalization Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 3
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+#modelAlexNet.add(BatchNormalization()) sin batch
+#modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2))) sin max pooling
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 4
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+#modelAlexNet.add(BatchNormalization()) sin batch
+#modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2))) sin max pooling
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Capa 5
+modelAlexNet.add(ZeroPadding2D((1,1)))
+modelAlexNet.add(Conv2D(384, (3, 3), padding='valid'))
+modelAlexNet.add(Activation(activation='relu'))
+print("Convolución Capa {}: {} ".format(layerCount,modelAlexNet.output_shape))
+#modelAlexNet.add(BatchNormalization()) sin batch
+modelAlexNet.add(MaxPooling2D((3,3), strides=(2,2)))
+print("Max Pooling Capa {}: {}".format(layerCount,modelAlexNet.output_shape))
+layerCount = layerCount + 1
+#Representar output de capa 5 a 1D usando flatten
+modelAlexNet.add(Flatten())
+print("Representación 1D: {}".format(modelAlexNet.output_shape))
+modelAlexNet.summary()
+
+#Output:
+
+runfile('/home/F5/Documents/ML-DL/Laboratorio2/AlexNetCapa12.py', wdir='/home/F5/Documents/ML-DL/Laboratorio2')
+Batch Normalization Capa 1: (None, 55, 55, 96) 
+Max Pooling Capa 1: (None, 27, 27, 96)
+Batch Normalization Capa 2: (None, 27, 27, 256) 
+Max Pooling Capa 2: (None, 13, 13, 256)
+Convolución Capa 3: (None, 13, 13, 384) 
+Convolución Capa 4: (None, 13, 13, 384) 
+Convolución Capa 5: (None, 13, 13, 384) 
+Max Pooling Capa 5: (None, 6, 6, 384)
+Representación 1D: (None, 13824)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+zero_padding2d_34 (ZeroPaddi (None, 228, 228, 3)       0         
+_________________________________________________________________
+conv2d_33 (Conv2D)           (None, 55, 55, 96)        34944     
+_________________________________________________________________
+activation_33 (Activation)   (None, 55, 55, 96)        0         
+_________________________________________________________________
+batch_normalization_21 (Batc (None, 55, 55, 96)        384       
+_________________________________________________________________
+max_pooling2d_20 (MaxPooling (None, 27, 27, 96)        0         
+_________________________________________________________________
+zero_padding2d_35 (ZeroPaddi (None, 31, 31, 96)        0         
+_________________________________________________________________
+conv2d_34 (Conv2D)           (None, 27, 27, 256)       614656    
+_________________________________________________________________
+activation_34 (Activation)   (None, 27, 27, 256)       0         
+_________________________________________________________________
+batch_normalization_22 (Batc (None, 27, 27, 256)       1024      
+_________________________________________________________________
+max_pooling2d_21 (MaxPooling (None, 13, 13, 256)       0         
+_________________________________________________________________
+zero_padding2d_36 (ZeroPaddi (None, 15, 15, 256)       0         
+_________________________________________________________________
+conv2d_35 (Conv2D)           (None, 13, 13, 384)       885120    
+_________________________________________________________________
+activation_35 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+zero_padding2d_37 (ZeroPaddi (None, 15, 15, 384)       0         
+_________________________________________________________________
+conv2d_36 (Conv2D)           (None, 13, 13, 384)       1327488   
+_________________________________________________________________
+activation_36 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+zero_padding2d_38 (ZeroPaddi (None, 15, 15, 384)       0         
+_________________________________________________________________
+conv2d_37 (Conv2D)           (None, 13, 13, 384)       1327488   
+_________________________________________________________________
+activation_37 (Activation)   (None, 13, 13, 384)       0         
+_________________________________________________________________
+max_pooling2d_22 (MaxPooling (None, 6, 6, 384)         0         
+_________________________________________________________________
+flatten_2 (Flatten)          (None, 13824)             0         
+=================================================================
+Total params: 4,191,104
+Trainable params: 4,190,400
+Non-trainable params: 704
