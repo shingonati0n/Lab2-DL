@@ -11,9 +11,9 @@ This Lab has 2 main exercises using Keras on top of Tensorflow:
 
 System environment details: 
 
-OS: RHEL Linux
+OS: RHEL Linux  
 Distro: Fedora 26  
-Python version: 3.6  with pip
+Python version: 3.6 with pip (Anaconda made things too slow LOL)
 Keras API Verson: 2.0.9   
 Tensorflow Version  1.4.0
 IDE: Spyder3 
