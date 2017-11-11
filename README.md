@@ -13,7 +13,9 @@ System environment details:
 
 OS: RHEL Linux  
 Distro: Fedora 26  
-Python version: 3.6 with pip (Anaconda made things too slow LOL)
+Python version: 3.6 with pip (Anaconda made things too slow LOL)  
 Keras API Verson: 2.0.9   
 Tensorflow Version  1.4.0
 IDE: Spyder3 
+
+Feel free to copy this repo and add any helpful insight or comments on it.
