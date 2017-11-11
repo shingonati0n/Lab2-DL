@@ -1,19 +1,19 @@
-# Lab2-DL: Deep Learning Laboratotio 2 Parte 1
+# Lab2-DL: Deep Learning Lab 2 Part 1
 
 @Author: shingonati0n (hsmunozc@gmail.com)
 
-En este espacio se encuentran respaldados los archivos que conforman el Laboratorio 2 de Deep Learning del Diplomado de Big Data
-de la Pontifica Universidad Catolica de Chile. 
+In this space is available a backup of the code and files used on the 2nd Lab for the Deep Learning class, headed by Álvaro Soto, in the Pontificia Universidad Catolica de Chile. 
 
-Este consta de dos ejercicios utlizando Keras: 
+This Lab has 2 main exercises using Keras on top of Tensorflow:  
 
--CNN (Redes Neuronales Convulsonales) con AlexNet - carpeta Lab2-Code-Act1-7  
--RNN (Redes Neuronales Recurrentes) utilizando RNN tradicional y Long Short Term Memory - carpeta Lab2-Code-Act8-11
+-CNN (Convulsional Neural Networks) using AlexNet - located in folder Lab2-Code-Act1-7  
+-RNN (Recurrent Neural Networks) using traditional RNN and Long Short Term Memory on the International Airlines Passengers csv dataset - located at Lab2-Code-Act8-11
 
-Detalles del entorno y de ejecución  
+System environment details: 
 
-SO: Fedora Linux 26  
-IDE: Spyder3  
-Version de Python: 3.6  
-Version de Keras API: 2.0.9   
-Backend: Tensorflow  1.4.0  
+OS: RHEL Linux
+Distro: Fedora 26  
+Python version: 3.6  with pip
+Keras API Verson: 2.0.9   
+Tensorflow Version  1.4.0
+IDE: Spyder3 
