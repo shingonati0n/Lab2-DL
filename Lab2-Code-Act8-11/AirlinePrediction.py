@@ -3,7 +3,7 @@ from keras.layers import Dense, Dropout, TimeDistributed, Flatten, SimpleRNN,LST
 import airlineUtils
 
 #set sequence length
-history=4 
+history=4
 
 #read training and test sets
 trainX, trainY, testX, testY, scaler, dataset=airlineUtils.readAirlineData(history)
@@ -12,11 +12,11 @@ trainX, trainY, testX, testY, scaler, dataset=airlineUtils.readAirlineData(histo
 modelRNN = Sequential()
 modelRNN.add(SimpleRNN(5,input_shape=(history,1),return_sequences=False))
 modelRNN.add(Dense(1))
+modelRNN.add(Dropout(0.2))
 
 #Train model
 modelRNN.compile(loss='mean_squared_error', optimizer='adam')
-modelRNN.fit(trainX, trainY, epochs=10, batch_size=5, verbose=2)
-
+modelRNN.fit(trainX, trainY, epochs=150, batch_size=5, verbose=2)
 # Make predictions
 trainPredict = modelRNN.predict(trainX)
 testPredict = modelRNN.predict(testX)

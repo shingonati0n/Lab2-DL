@@ -13,7 +13,7 @@ from keras.layers import Dense, Dropout, TimeDistributed, Flatten, SimpleRNN,LST
 import airlineUtils
 
 #set sequence length
-history=4 
+history=4
 
 #read training and test sets
 trainX, trainY, testX, testY, scaler, dataset=airlineUtils.readAirlineData(history)
@@ -33,6 +33,7 @@ testPredict = modelRNN.predict(testX)
 
 #Display results
 airlineUtils.displayResult(dataset, trainPredict, trainY, testPredict, testY, scaler, history)
+modelRNN.summary()
 
 #Cabe destacar que al igual que con los ejercicios anteriores, el codigo ha sido levemente actualizado.
 
@@ -52,5 +53,11 @@ airlineUtils.displayResult(dataset, trainPredict, trainY, testPredict, testY, sc
 #Train Score: 25.77 RMSE
 #Test Score: 77.36 RMSE
 
-#El resultado varía debido a que se presentan problemas de desvanecimiento de gradiente. Esto
-#es evidente mirando los graficos de cada ejecucion. 
+#El resultado varía debido a dos factores principales. En primer lugar, a la falta de elementos
+#al momento de configurar la red. No hay funcion de activacion, ni tampoco una funcion para inicializar
+#el peso. El otro motivo, tiene que ver con los problemas como vanishing gradient y exploding gradient,
+#Considerando que el entrenamiento se esta realizando utilizando 150 epochs, la gradiente puede estarse 
+#viendo afectada por los cambios en el error. Ya que la red siempre multiplica, en este caso el RSME siempre
+#será distinto 
+
+
