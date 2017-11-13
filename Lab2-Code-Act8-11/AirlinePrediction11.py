@@ -61,5 +61,8 @@ modelRNN.summary()
 #Trainable params: 41
 #Non-trainable params: 0
 
-#COmo se puede observar, la cantidad de parametros aumenta para LSTM; Aunque el errormedio cuadratico es mayor para 
-#LSTM, este demuestra mejor rendimiento que RNN Normal. 
+#Como se puede observar, la cantidad de parametros aumenta para LSTM, al igual que el error reportado.   
+
+
+
+

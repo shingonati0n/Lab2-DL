@@ -176,4 +176,4 @@ modelAlexNet.summary()
 #La justificacion principal de esta arquitectura es la misma que el porque de CNN; reducir una potencial cantidad de conexiones neuronales
 #y transformarlas de manera de simplificar el proceso. Algunas observaciones especificas para AlexNet:
 #-Batch Normalization permite obtener mayores ratios de aprendizaje
-#-La presencia de un bias vector es crucial, ya que permite ajutar la funcion
+#-La presencia de un bias vector es crucial, ya que permite ajustar la funcion

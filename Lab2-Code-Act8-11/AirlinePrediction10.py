@@ -1,11 +1,11 @@
 #Actividad 10
-#El archivo AirlinePrediction.py, disponible en el sitio web del curso, contiene el código anterior y las fun-
-#ciones necesarias para cargar el archivo de datos y mostrar los resultados obtenidos. Use este código para
-#probar el rendimiento del modelo base. En términos de la presentación de resultados, la salida del archivo
-#AirlinePrediction.py indica el error medio cuadrático en el set de entrenamiento y test. Además muestra una
-#gráfica que incluye los datos originales (curva azul), la predicción en datos de entrenamiento (curva verde) y
-#la predicción en datos de test (curva roja).
-#Ejecute el modelo base varias veces, ¿Por qué no se obtiene siempre el mismo resultado?. Fundamente su
+#El archivo AirlinePrediction.py, disponible en el sitio web del curso, contiene el cรณdigo anterior y las fun-
+#ciones necesarias para cargar el archivo de datos y mostrar los resultados obtenidos. Use este cรณdigo para
+#probar el rendimiento del modelo base. En tรฉrminos de la presentaciรณn de resultados, la salida del archivo
+#AirlinePrediction.py indica el error medio cuadrรกtico en el set de entrenamiento y test. Ademรกs muestra una
+#grรกfica que incluye los datos originales (curva azul), la predicciรณn en datos de entrenamiento (curva verde) y
+#la predicciรณn en datos de test (curva roja).
+#Ejecute el modelo base varias veces, ยฟPor quรฉ no se obtiene siempre el mismo resultado?. Fundamente su
 #respuesta.
 
 from keras.models import Sequential
@@ -53,7 +53,7 @@ modelRNN.summary()
 #Train Score: 25.77 RMSE
 #Test Score: 77.36 RMSE
 
-#El resultado varía debido a dos factores principales. En primer lugar, a la falta de elementos
+#El resultado varรญa debido a dos factores principales. En primer lugar, a la falta de elementos
 #al momento de configurar la red. No hay funcion de activacion, ni tampoco una funcion para inicializar
 #el peso. El otro motivo, tiene que ver con los problemas como vanishing gradient y exploding gradient,
 #Considerando que el entrenamiento se esta realizando utilizando 150 epochs, la gradiente puede estarse 

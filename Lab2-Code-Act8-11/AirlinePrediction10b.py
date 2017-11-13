@@ -19,12 +19,16 @@ trainX, trainY, testX, testY, scaler, dataset=airlineUtils.readAirlineData(histo
 # create and fit the LSTM network
 modelRNN = Sequential()
 modelRNN.add(SimpleRNN(5,input_shape=(history,1),return_sequences=False))
+modelRNN.add(Dense(100))
+modelRNN.add(Dropout(0.5))
 modelRNN.add(Dense(1))
-modelRNN.add(Dropout(0.2))
+
 
 #Train model
 modelRNN.compile(loss='mean_squared_error', optimizer='adam')
+print(modelRNN.output_shape)
 modelRNN.fit(trainX, trainY, epochs=150, batch_size=5, verbose=2)
+print(modelRNN.output_shape)
 
 # Make predictions
 trainPredict = modelRNN.predict(trainX)
@@ -32,6 +36,7 @@ testPredict = modelRNN.predict(testX)
 
 #Display results
 airlineUtils.displayResult(dataset, trainPredict, trainY, testPredict, testY, scaler, history)
+modelRNN.summary()
 
 #Output:
 
@@ -47,21 +52,23 @@ airlineUtils.displayResult(dataset, trainPredict, trainY, testPredict, testY, sc
 
 #Output:
 
-#ValueError: Error when checking target: expected dense_10 to have shape (None, 100) but got array with shape (85, 1)
+#Train Score: 22.30 RMSE
+#Test Score: 79.22 RMSE
 
-#Al intentar agregar una capa densa de 100 unidades, el programa falla. Esto ocurre por diseño: 
-#el momento en que se ajusta el modelo (fit), el programa espera que la entrada tenga un shape con 
-#1 clase, sin embargo, al aplicar Dense(100), se provoca el error descrito.
-#Una evidencia de esto es el output con Dense(1) y obteniendo el summary de la ejecución:
+#Al agregar una capa densa de 100 unidades, se generan parametros adicionales. Esto afecta en que la red  
+#toma un poco mas de tiempo para entrenar, dado a estos parametros adiconales.
 
 #Layer (type)                 Output Shape              Param #   
 #=================================================================
-#simple_rnn_14 (SimpleRNN)    (None, 5)                 35        
+#simple_rnn_8 (SimpleRNN)     (None, 5)                 35        
 #_________________________________________________________________
-#dense_11 (Dense)             (None, 1)                 6         
+#dense_12 (Dense)             (None, 100)               600       
+#_________________________________________________________________
+#dense_13 (Dense)             (None, 1)                 101       
 #=================================================================
-
-#El programa deberia tener 100 clases para que una insercion de capa densa de 100 unidades funcionase.
+#Total params: 736
+#Trainable params: 736
+#Non-trainable params: 0
 
 #• Agregue Dropout.
 
@@ -83,5 +90,35 @@ airlineUtils.displayResult(dataset, trainPredict, trainY, testPredict, testY, sc
 #Output:
 #Train Score: 21.67 RMSE
 #Test Score: 49.81 RMSE
+
+#Sin embargo, si se posiciona el Dropout entre Dense(100) y Dense(1), esto puede llevar a un entrenamiento
+#mas preciso; Al existir mas parametros y remover varios de ellos, se equilibra el training:
+
+#Codigo ejecutado con Dropout + Dense
+
+#modelRNN = Sequential()
+#modelRNN.add(SimpleRNN(5,input_shape=(history,1),return_sequences=False))
+#modelRNN.add(Dense(100))
+#modelRNN.add(Dropout(0.5))
+#modelRNN.add(Dense(1))
+
+#Output:
+
+#Train Score: 18.88 RMSE
+#Test Score: 52.64 RMSE
+
+#Layer (type)                 Output Shape              Param #   
+#=================================================================
+#simple_rnn_9 (SimpleRNN)     (None, 5)                 35        
+#_________________________________________________________________
+#dense_14 (Dense)             (None, 100)               600       
+#_________________________________________________________________
+#dropout_7 (Dropout)          (None, 100)               0         
+#_________________________________________________________________
+#dense_15 (Dense)             (None, 1)                 101       
+#=================================================================
+#Total params: 736
+#Trainable params: 736
+#Non-trainable params: 0
 
 #2014 paper Dropout: A Simple Way to Prevent Neural Networks from Overfitting (download the PDF).
